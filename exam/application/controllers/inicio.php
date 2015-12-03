@@ -19,6 +19,7 @@ class Inicio  extends CI_Controller{
         $this->load->model('ticket');
         $this->load->model('departamento');
         $this->load->model('seguimiento');
+        $this->load->model('bitacora');
     }
     
     function sendEmail()
@@ -102,6 +103,27 @@ class Inicio  extends CI_Controller{
         }
         $departamentos=  $this->departamento->getDepartamentos();
         $this->load->view('tickets', array('data'=>$data, 'departamentos'=>$departamentos, 'usuario'=>$this ->session->userdata('usuario')));
+    }
+    
+    function bitacora()
+    {
+        if($this ->session->userdata('usuario')==NULL)
+        {
+            header('Location: '.  site_url());
+        }
+        /*
+        if($this ->session->userdata('nivel')=='administrador')
+        {
+            $data=  $this->bitacora->getTickets();
+        }
+        else
+        {
+            $data=  $this->ticket->getTicketsByPersona($this ->session->userdata('persona'));
+        }
+         * 
+         */
+        $bitacora=  $this->bitacora->getBitacora();
+        $this->load->view('bitacora', array('data'=>$bitacora, 'usuario'=>$this ->session->userdata('usuario')));
     }
     
     function seguimiento()
