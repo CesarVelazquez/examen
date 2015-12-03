@@ -34,7 +34,7 @@ class Inicio  extends CI_Controller{
         $config['mailtype']='html';
         $config['charset']='utf-8';
         $config['smtp_user']="csar.vlazquez@gmail.com";
-        $config['$smtp_pass']="cesar5225";
+        $config['$smtp_pass']="sa";
         
         $this->load->library('email');
         $this->email->initialize($config);
@@ -149,7 +149,7 @@ class Inicio  extends CI_Controller{
             $departamento=  $this->input->post('departamento');
             $nombre=  $this->input->post('nombre');
             $descripcion=  $this->input->post('descripcion');
-            $data=array('idDepartamento'=>$departamento, 'nombre'=>$nombre, 'descripcion'=>$descripcion, 'fechaAlta'=>  date('Y-m-d'), 'estatus'=>'registrado');
+            $data=array('idDepartamento'=>$departamento, 'nombre'=>$nombre, 'descripcion'=>$descripcion, 'fechaAlta'=>  date('Y-m-d'));
             $this->ticket->updateTicket($idTicket, $data);
             header('Location: '.  site_url('inicio/inicio'));
         }
@@ -157,7 +157,6 @@ class Inicio  extends CI_Controller{
         {
             header('Location: '.  site_url('inicio/login'));
         }
-        
     }
     
     function asignarTicket()

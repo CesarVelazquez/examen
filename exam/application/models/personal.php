@@ -15,7 +15,7 @@ class Personal extends CI_Model
     
     function login($usuario, $clave)
     {
-        $query=  $this->db->get_where('personal', array('usuario'=>$usuario, 'clave'=>$clave));
+        $query=  $this->db->get_where('personal', array('usuario'=>$usuario, 'clave'=>sha1($clave)));
         return $query->row();
     }
     
