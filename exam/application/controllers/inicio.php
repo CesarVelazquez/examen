@@ -24,27 +24,41 @@ class Inicio  extends CI_Controller{
     
     function sendEmail()
     {
-        $config = array();
-        $config['useragent']="CodeIgniter";
-        $config['mailpath']="/usr/sbin/sendmail";
-        
-        
-        $config['protocol']="smtp";
-        $config['smtp_host']="smtp.gmail.com";
-        $config['smtp_port']="465";
-        $config['mailtype']='html';
-        $config['charset']='utf-8';
-        $config['smtp_user']="csar.vlazquez@gmail.com";
-        $config['$smtp_pass']="sa";
-        
+        //$config['useragent']    = 'CodeIgniter';
+        $config['protocol']     = 'smtp';
+        $config['smtp_host']    = 'smtp.googlemail.com';
+        $config['mailpath']            = "/usr/sbin/sendmail";
+        $config['smtp_user']    = 'csar.vlazquez@gmail.com'; // Your gmail id
+        $config['smtp_pass']    = 'qjksddsi'; // Your gmail Password
+        $config['smtp_port']    = 465;
+        $config['wordwrap']     = TRUE;    
+        //$config['wrapchars']    = 76;
+        $config['mailtype']     = 'html';
+        $config['charset']      = 'utf-8';
+        $config['validate']     = FALSE;
+        $config['priority']     = 3;
+        //$config['newline']      = "\r\n";
+        //$config['crlf']         = "\r\n";
+
         $this->load->library('email');
         $this->email->initialize($config);
-        $this->email->from('csar.vlazquez@gmail.com', 'Administrador');
+
+        $this->email->from('csar.vlazquez@gmail.com', 'asunto de prueba');
         $this->email->to('cesar43f@gmail.com');
-        $this->email->subject('prueba');
-        $this->email->message('mensaje de prueba');
+
+
+        $this->email->subject('titulo de prueba');
+        $this->email->message('mensaje de prueba');    
         $this->email->send();
-        //mail('csar.vlazquez@gmail.com', 'csar.vlazquez@gmail.com', 'mensaje de prueba');
+        echo $this->email->print_debugger();
+/*
+        if ($this->email->send()) {
+            echo 'correo enviado con exito';
+        }else{
+            echo "error";
+        }
+ * 
+ */
     }
     
     function index($data=NULL)
@@ -122,7 +136,7 @@ class Inicio  extends CI_Controller{
         }
          * 
          */
-        $bitacora=  $this->bitacora->getBitacora();
+        $bitacora=  $this->bitacora->getAll();
         $this->load->view('bitacora', array('data'=>$bitacora, 'usuario'=>$this ->session->userdata('usuario')));
     }
     
@@ -134,7 +148,7 @@ class Inicio  extends CI_Controller{
         }
         if($this ->session->userdata('nivel')=='administrador')
         {
-            $data=  $this->ticket->getTickets();
+            $data=  $this->ticket->getAll();
         }
         else
         {

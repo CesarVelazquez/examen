@@ -28,6 +28,14 @@
                                 <li class="list-group-item"><a href="<?php echo site_url('inicio/logout') ?>">Cerrar Sesión</a></li>
                                 <li class="list-group-item"><a href="<?php echo site_url('inicio/inicio') ?>">Mis Tickets</a></li>
                                 <li class="list-group-item"><a href="<?php echo site_url('inicio/seguimiento') ?>">Asignarme Tickets</a></li>
+                                <?php
+                                if($this ->session->userdata('nivel')=='administrador')
+                                {
+                                    ?>
+                                <li class="list-group-item"><a href="<?php echo site_url('inicio/bitacora') ?>">Ver Bitacora</a></li>
+                                <?php
+                                }
+                                ?>
                               </ul>
                           </div>
                       </div>
@@ -36,11 +44,11 @@
                   <table class="table table-bordered table-striped table-hover">
                     <thead>
                       <tr>
-                        <th>idTicket</th>
-                        <th>Alta</th>
-                        <th>Nombre</th>
-                        <th>Estatus</th>
-                        <th>Seguimiento</th>
+                        <th>Fecha</th>
+                        <th>Acción</th>
+                        <th>Usuario</th>
+                        <th>Ticket</th>
+                        <th>Descripcion</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -56,14 +64,11 @@
                         foreach ($data as $item) {
                             ?>
                         <tr>
-                            <td><?php echo $item->idTicket ?></td>
                             <td><?php echo $item->fechaAlta ?></td>
+                            <td><?php echo $item->accion ?></td>
+                            <td><?php echo $item->usuario ?></td>
                             <td><?php echo $item->nombre ?></td>
-                            <td><?php echo $item->estatus ?></td>
-                            <td>
-                                <button type="button" class="btn btn-warning mTicket" data-id="<?php echo $item->idTicket ?>"><span class="glyphicon glyphicon-edit"></span></button>
-                                <button type="button" class="btn btn-primary verSeguimiento" data-id="<?php echo $item->idTicket ?>" data-toggle="modal" data-target="#ver"><span class="glyphicon glyphicon-eye-open"></span></button>
-                            </td>
+                            <td><?php echo $item->descripcion ?></td>
                         </tr>
                         <?php
                         }
@@ -75,62 +80,5 @@
       </div>
     <script src="<?php echo base_url('assets/js/jquery.min.js') ?>"></script>
     <script src="<?php echo base_url('assets/js/bootstrap.min.js') ?>"></script>
-    <script>
-        $(function(){
-            $("#nuevo").click(function(){
-                $("#frmTicket").slideDown('slow');
-                $("#tickets").attr("action", "<?php echo site_url('inicio/nuevo') ?>");
-                $("#guardar").text("Guardar");
-            });
-            
-            $(".mTicket").click(function(){
-                $.ajax({
-                    url: '<?php echo site_url('inicio/getTicket') ?>',
-                    type: 'POST',
-                    data: {id: $(this).data("id")},
-                    dataType: 'JSON',
-                    success: function(p){
-                        $("#departamento").val(p.idDepartamento);
-                        $("#nombre").val(p.nombre);
-                        $("#descripcion").val(p.descripcion);
-                        $("#idTicket").val(p.idTicket);
-                        $("#frmTicket").slideDown('slow');
-                        $("#tickets").attr("action", "<?php echo site_url('inicio/modificar') ?>");
-                        $("#guardar").text("Modificar");
-                    }
-                });
-            });
-            
-            $(".verSeguimiento").click(function(){
-                $(".contenido").remove();
-                $(".noResult").removeClass("oculto");
-                $.ajax({
-                    url: '<?php echo site_url('inicio/getSeguimiento') ?>',
-                    type: 'POST',
-                    data: {ticket:$(this).data("id")},
-                    dataType: 'JSON',
-                    success: function(p){
-                        $.each(p, function(i, v){
-                            $(".noResult").addClass("oculto");
-                            $("#seguimiento tbody").append('<tr class="contenido"><td>'+v.nombreTicket+'</td><td>'+v.descripcionTicket+'</td><td>'+v.descripcionSeguimiento+'</td><td>'+v.estatus+'</td><td>'+v.persona+'</td></tr>')
-                        });
-                    }
-                });
-            });
-            /*
-            $("#guardar").click(function(){
-                var data=$("#tickets").serialize();
-                alert(data);
-                $.ajax({
-                    url: '<?php //echo site_url('inicio/nuevo') ?>',
-                    type: 'POST',
-                    data: data,
-                    success: function(p){
-                        window.location.reload();
-                    }
-                });
-            });*/
-        });
-    </script>
   </body>
 </html>

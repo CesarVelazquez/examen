@@ -40,6 +40,18 @@ class Ticket extends CI_Model
         return $query->result();
     }
     
+    function getAll()
+    {
+        $query=  $this->db->query('
+                    select t.idTicket, t.idDepartamento, t.idPersonal, t.fechaAlta, t.nombre, t.descripcion, s.estatus, d.nombre as departamento, s.idSeguimiento, (select se.idSeguimiento from seguimiento se where se.idTicket=t.idTicket and se.estatus!="creado" order by s.idSeguimiento desc limit 1) as idSeguimiento2
+                    from ticket t
+                    left join seguimiento s
+                    on t.idTicket=s.idTicket and s.estatus="creado"
+                    inner join departamento d
+                    on t.idDepartamento=d.idDepartamento');
+        return $query->result();
+    }
+    
     function getTicketsByPersona($idPersona)
     {
         //$query=  $this->db->get_where('ticket', array('idPersonal'=>$idPersona));

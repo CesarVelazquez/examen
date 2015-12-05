@@ -13,6 +13,17 @@ class Bitacora extends CI_Model
         return $query->row();
     }
     
+    function getAll()
+    {
+        $query=  $this->db->query('select b.accion, p.usuario, p.email, t.fechaAlta, t.nombre, t.descripcion
+        from bitacora b
+        inner join personal p
+        on b.idPersonal=p.idPersonal
+        inner join ticket t
+        on b.idTicket=t.idTicket');
+        return $query->result();
+    }
+    
     function setBitacora($data)
     {
         $this->db->insert('bitacora', $data);

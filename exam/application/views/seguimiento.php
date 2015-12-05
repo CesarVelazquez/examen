@@ -63,6 +63,14 @@
                                 <li class="list-group-item"><a href="<?php echo site_url('inicio/logout') ?>">Cerrar Sesión</a></li>
                                 <li class="list-group-item"><a href="<?php echo site_url('inicio/inicio') ?>">Mis Tickets</a></li>
                                 <li class="list-group-item"><a href="<?php echo site_url('inicio/seguimiento') ?>">Asignarme Tickets</a></li>
+                                <?php
+                                if($this ->session->userdata('nivel')=='administrador')
+                                {
+                                    ?>
+                                <li class="list-group-item"><a href="<?php echo site_url('inicio/bitacora') ?>">Ver Bitacora</a></li>
+                                <?php
+                                }
+                                ?>
                               </ul>
                           </div>
                       </div>
